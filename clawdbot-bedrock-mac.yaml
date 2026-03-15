@@ -530,6 +530,10 @@ Resources:
             echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.zshrc
             echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"' >> ~/.zshrc
           fi
+          
+          # Install Kiro CLI
+          echo "Installing Kiro CLI..."
+          curl -fsSL https://cli.kiro.dev/install | bash || echo "Kiro CLI installation failed (non-fatal)"
           USERSCRIPT
           
           # Verify openclaw installed
