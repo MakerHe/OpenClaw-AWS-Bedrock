@@ -2,6 +2,12 @@
 
 This guide covers Kiro CLI installation for OpenClaw deployments on AWS.
 
+## ⚠️ Important: Manual Installation Required
+
+Due to AWS UserData size limitations (16KB), Kiro CLI is **not automatically installed** during CloudFormation deployment.
+
+**After your stack is deployed, install Kiro CLI manually using one of the methods below.**
+
 ## What is Kiro CLI?
 
 Kiro CLI is an AI-powered code generation and automation tool that can:
