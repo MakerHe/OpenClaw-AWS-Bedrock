@@ -69,9 +69,15 @@ OpenClaw-AWS-Bedrock/
 
 ### UserData Size Limit
 
-**Issue:** CloudFormation UserData is limited to 16KB. Adding too many setup scripts can exceed this limit.
+**Issue:** CloudFormation UserData is limited to 16KB (after Base64 encoding). Adding too many setup scripts can exceed this limit.
 
-**Solution:** Kiro CLI installation moved to post-deployment manual step. See `docs/KIRO_INSTALLATION.md` for instructions.
+**Solution:** Kiro CLI installation moved to post-deployment manual step. See `docs/KIRO_INSTALLATION.md` for installation instructions.
+
+**Detailed Explanation:** See `docs/USERDATA_LIMIT_EXPLAINED.md` for:
+- Why the 16KB limit exists
+- How Base64 encoding affects size (37% increase)
+- Why we chose manual installation over alternatives (S3, Lambda, etc.)
+- Best practices for UserData size management
 
 ## 🎓 Best Practices
 
