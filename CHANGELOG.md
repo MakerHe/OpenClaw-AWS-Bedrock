@@ -67,38 +67,6 @@ OpenClaw-AWS-Bedrock/
 
 ## ⚠️ Known Issues & Solutions
 
-### GuardDuty VPC Endpoint Conflict
-
-**Issue:** When deleting stacks in accounts with GuardDuty enabled, VPC deletion may fail due to GuardDuty-managed resources.
-
-**Solution:**
-```bash
-# Before deleting a stack, manually clean up GuardDuty resources:
-VPC_ID=$(aws cloudformation describe-stack-resource \
-  --stack-name YOUR_STACK \
-  --logical-resource-id OpenClawVPC \
-  --query 'StackResourceDetail.PhysicalResourceId' \
-  --output text)
-
-# Delete GuardDuty VPC Endpoints
-aws ec2 describe-vpc-endpoints \
-  --filters "Name=vpc-id,Values=$VPC_ID" "Name=service-name,Values=*guardduty*" \
-  --query 'VpcEndpoints[].VpcEndpointId' \
-  --output text | \
-  xargs -I {} aws ec2 delete-vpc-endpoints --vpc-endpoint-ids {}
-
-# Delete GuardDuty Security Groups
-aws ec2 describe-security-groups \
-  --filters "Name=vpc-id,Values=$VPC_ID" "Name=group-name,Values=GuardDutyManagedSecurityGroup-*" \
-  --query 'SecurityGroups[].GroupId' \
-  --output text | \
-  xargs -I {} aws ec2 delete-security-group --group-id {}
-
-# Wait 30 seconds, then delete stack
-sleep 30
-aws cloudformation delete-stack --stack-name YOUR_STACK
-```
-
 ### UserData Size Limit
 
 **Issue:** CloudFormation UserData is limited to 16KB. Adding too many setup scripts can exceed this limit.
